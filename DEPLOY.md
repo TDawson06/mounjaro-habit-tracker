@@ -25,12 +25,13 @@ git branch -M main
 git push -u origin main
 ```
 
-### 2. Deploy to Vercel (free)
+### 2. Deploy to Netlify (free)
 
-1. Go to [vercel.com](https://vercel.com) and sign in (e.g. with GitHub).
-2. **Add New** → **Project** → import your `mounjaro-habit-tracker` repo.
-3. Leave defaults: **Build Command** `npm run build`, **Output Directory** `dist`.
-4. Click **Deploy**. In a minute you’ll get a URL like `https://mounjaro-habit-tracker-xxx.vercel.app`.
+1. Go to [netlify.com](https://netlify.com) and sign in (e.g. with GitHub).
+2. **Add new site** → **Import an existing project** → connect GitHub → select your `mounjaro-habit-tracker` repo.
+3. Set **Build command:** `npm run build`
+4. Set **Publish directory:** `dist`
+5. Click **Deploy**. In a minute you’ll get a URL like `https://your-site-name.netlify.app`.
 
 ### 3. Use it on your phone
 
@@ -42,12 +43,12 @@ After that, open it from your home screen like any app. It runs in standalone mo
 
 ---
 
-## Option B: Netlify (alternative to Vercel)
+## Option B: Vercel (alternative)
 
-1. Go to [netlify.com](https://netlify.com) and sign in.
-2. **Add new site** → **Import an existing project** → connect GitHub → select your repo.
-3. Build command: `npm run build`, publish directory: `dist`.
-4. Deploy. You’ll get a URL like `https://random-name.netlify.app`.
+1. Go to [vercel.com](https://vercel.com) and sign in with GitHub.
+2. **Add New** → **Project** → import your `mounjaro-habit-tracker` repo.
+3. **Build Command:** `npm run build`, **Output Directory:** `dist`.
+4. Deploy. You’ll get a URL like `https://mounjaro-habit-tracker-xxx.vercel.app`.
 
 Then use the same “Add to Home Screen” / “Install app” steps on your phone as above.
 
@@ -103,8 +104,8 @@ Open the project in Xcode, then run on a device or archive for **App Store Conne
 
 | Goal                         | What to do |
 |-----------------------------|------------|
-| Use on phone anywhere       | Deploy to Vercel or Netlify (Option A or B), open URL on phone, then Add to Home Screen. |
+| Use on phone anywhere       | Deploy to Netlify or Vercel (Option A or B), open URL on phone, then Add to Home Screen. |
 | App-like icon, full screen  | Same as above; the PWA manifest already enables “Install app” / “Add to Home Screen”. |
-| Listed in App Store/Play     | Use Capacitor (Option C), then submit the built app to Apple/Google. |
+| Listed in App Store/Play    | Use Capacitor (Option C), then submit the built app to Apple/Google. |
 
-For most people, **Option A (Vercel + Add to Home Screen)** is enough: one link, works on any phone, and it behaves like an app when installed.
+For most people, **Option A (Netlify + Add to Home Screen)** is enough: one link, works on any phone, and it behaves like an app when installed.

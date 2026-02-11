@@ -7,8 +7,6 @@ import {
   getWeightChange,
   getNextMilestones,
   kgToGo,
-  mergeMilestones,
-  generateMilestoneBands,
   getHabitStreak,
 } from "../lib/progress.js";
 
@@ -17,7 +15,7 @@ export function Dashboard({ data, setData }) {
   const habits = data.habits || [];
   const habitChecks = data.habitChecks || {};
   const weightLogs = data.weightLogs || [];
-  const customMilestones = data.milestones || [];
+  const milestones = data.milestones || [];
   const latestLog = getLatestWeight(weightLogs);
   const currentWeight = latestLog?.weightKg ?? null;
   const change = getWeightChange(weightLogs);
@@ -33,9 +31,7 @@ export function Dashboard({ data, setData }) {
     });
   });
 
-  const bandMilestones = currentWeight != null ? generateMilestoneBands(Math.ceil(currentWeight / 2) * 2, 93, 2) : [];
-  const merged = mergeMilestones(customMilestones, bandMilestones);
-  const nextThree = getNextMilestones(currentWeight, merged, 3);
+  const nextThree = getNextMilestones(currentWeight, milestones, 3);
 
   const toggleCheck = (habitId) => {
     setData((prev) => {

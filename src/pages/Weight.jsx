@@ -1,30 +1,20 @@
 import React from "react";
 import { Card, Button, Input } from "../components/ui.jsx";
 import { todayISO } from "../lib/dates.js";
-import {
-  getLatestWeight,
-  getWeightChange,
-  kgToGo,
-  mergeMilestones,
-  generateMilestoneBands,
-} from "../lib/progress.js";
+import { getLatestWeight, getWeightChange, kgToGo } from "../lib/progress.js";
+import { uid } from "../lib/storage.js";
 
 export function Weight({ data, setData }) {
   const [logDate, setLogDate] = React.useState(todayISO());
   const [weightKg, setWeightKg] = React.useState("");
+  const [newLabel, setNewLabel] = React.useState("");
+  const [newTargetKg, setNewTargetKg] = React.useState("");
 
   const weightLogs = [...(data.weightLogs || [])].sort((a, b) => (b.date > a.date ? 1 : -1));
-  const customMilestones = data.milestones || [];
+  const milestones = data.milestones || [];
   const latestLog = getLatestWeight(data.weightLogs || []);
   const currentWeight = latestLog?.weightKg ?? null;
   const change = getWeightChange(data.weightLogs || []);
-
-  const bandMilestones = currentWeight != null ? generateMilestoneBands(Math.ceil(currentWeight / 2) * 2, 93, 2) : [];
-  const merged = mergeMilestones(customMilestones, bandMilestones);
-  const nextFive = merged
-    .filter((m) => currentWeight == null || m.targetKg < currentWeight)
-    .sort((a, b) => b.targetKg - a.targetKg)
-    .slice(0, 5);
 
   const addLog = () => {
     const w = parseFloat(weightKg);
@@ -54,6 +44,25 @@ export function Weight({ data, setData }) {
         }),
       };
     });
+  };
+
+  const addMilestone = () => {
+    const label = newLabel.trim();
+    const target = parseFloat(newTargetKg);
+    if (!label || Number.isNaN(target) || target <= 0) return;
+    setData((prev) => ({
+      ...prev,
+      milestones: [...prev.milestones, { id: uid(), label, targetKg: target, type: "custom" }],
+    }));
+    setNewLabel("");
+    setNewTargetKg("");
+  };
+
+  const deleteMilestone = (id) => {
+    setData((prev) => ({
+      ...prev,
+      milestones: prev.milestones.filter((m) => m.id !== id),
+    }));
   };
 
   return (
@@ -119,40 +128,56 @@ export function Weight({ data, setData }) {
         )}
       </Card>
 
+      <Card title="Add Milestone">
+        <div className="space-y-3">
+          <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700">Label</label>
+            <Input
+              placeholder="e.g. Fit into Adidas jacket"
+              value={newLabel}
+              onChange={(e) => setNewLabel(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && addMilestone()}
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700">Target weight (kg)</label>
+            <Input
+              type="number"
+              step="0.1"
+              min="0"
+              placeholder="e.g. 94"
+              value={newTargetKg}
+              onChange={(e) => setNewTargetKg(e.target.value)}
+            />
+          </div>
+          <Button onClick={addMilestone}>Add milestone</Button>
+        </div>
+      </Card>
+
       <Card title="Milestones">
-        {merged.length === 0 ? (
-          <p className="text-sm text-gray-500">No milestones defined.</p>
+        {milestones.length === 0 ? (
+          <p className="text-sm text-gray-500">Add milestones above. Your goals will show here.</p>
         ) : (
           <ul className="space-y-2">
-            {[...merged].sort((a, b) => b.targetKg - a.targetKg).map((m) => {
+            {[...milestones].sort((a, b) => b.targetKg - a.targetKg).map((m) => {
               const toGo = kgToGo(currentWeight, m.targetKg);
               const achieved = toGo === 0;
               return (
-                <li key={m.id} className="flex items-center justify-between text-sm">
+                <li key={m.id} className="flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2 text-sm">
                   <span className="text-gray-700">{m.label}</span>
-                  <span className={achieved ? "font-medium text-emerald-600" : "text-gray-500"}>
-                    {achieved ? "Achieved" : `${toGo} kg to go`}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </Card>
-
-      <Card title="Auto milestones (next 5)">
-        {nextFive.length === 0 ? (
-          <p className="text-sm text-gray-500">
-            {currentWeight != null ? "No upcoming auto milestones, or you're at/below 93 kg." : "Log weight to see auto milestones."}
-          </p>
-        ) : (
-          <ul className="space-y-1 text-sm">
-            {nextFive.map((m) => {
-              const toGo = kgToGo(currentWeight, m.targetKg);
-              return (
-                <li key={m.id} className="flex justify-between">
-                  <span className="text-gray-600">{m.label}</span>
-                  <span className="text-gray-500">{toGo} kg to go</span>
+                  <div className="flex items-center gap-2">
+                    <span className={achieved ? "font-medium text-emerald-600" : "text-gray-500"}>
+                      {achieved ? "Achieved" : `${toGo} kg to go`}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => deleteMilestone(m.id)}
+                      className="text-gray-400 hover:text-red-600"
+                      aria-label="Delete milestone"
+                    >
+                      🗑
+                    </button>
+                  </div>
                 </li>
               );
             })}

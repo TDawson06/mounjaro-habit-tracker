@@ -1,10 +1,10 @@
-# Push to GitHub and Deploy to Vercel — Step-by-Step
+# Push to GitHub and Deploy — Step-by-Step
 
 Your project is already committed locally. Follow these steps in order.
 
 ---
 
-## Step 1: Create a new repo on GitHub
+## Step 1: Create a new repo on GitHub (if you haven’t)
 
 1. Go to **https://github.com** and sign in.
 2. Click the **+** (top right) → **New repository**.
@@ -35,18 +35,21 @@ If you chose a different repo name, use that instead of `mounjaro-habit-tracker`
 
 ---
 
-## Step 3: Deploy on Vercel
+## Step 3: Deploy on Netlify
 
-1. Go to **https://vercel.com** and sign in (choose **Continue with GitHub**).
-2. Click **Add New…** → **Project**.
-3. You should see **mounjaro-habit-tracker** (or your repo name). Click **Import**.
-4. On the configure screen:
-   - **Build Command:** `npm run build` (default)
-   - **Output Directory:** `dist` (default)
-   - **Install Command:** `npm install` (default)
-5. Click **Deploy**.
-6. Wait 1–2 minutes. When it’s done, you’ll get a URL like:
-   - **https://mounjaro-habit-tracker-xxx.vercel.app**
+1. Go to **https://netlify.com** and sign in (e.g. **Sign up / Log in with GitHub**).
+2. Click **Add new site** → **Import an existing project**.
+3. Choose **GitHub** and authorize Netlify if asked.
+4. Select your **mounjaro-habit-tracker** repo (or your repo name).
+5. On the configure screen:
+   - **Build command:** `npm run build`
+   - **Publish directory:** `dist`
+   - **Branch to deploy:** `main` (default)
+6. Click **Deploy site**.
+7. Wait 1–2 minutes. When it’s done, you’ll get a URL like:
+   - **https://random-name.netlify.app**
+
+You can change the site name under **Site settings** → **Domain management** → **Edit site name** (e.g. `mounjaro-tracker` → `https://mounjaro-tracker.netlify.app`).
 
 That’s your live app. Open it on your phone to use it and install it.
 
@@ -55,7 +58,7 @@ That’s your live app. Open it on your phone to use it and install it.
 ## Step 4: Use it on your phone
 
 1. On your phone, open **Chrome** (Android) or **Safari** (iPhone).
-2. Go to your Vercel URL (e.g. `https://mounjaro-habit-tracker-xxx.vercel.app`).
+2. Go to your Netlify URL (e.g. `https://your-site-name.netlify.app`).
 3. **Android (Chrome):** Tap Menu (⋮) → **Install app** or **Add to Home screen**.
 4. **iPhone (Safari):** Tap the Share icon → **Add to Home Screen** → name it **Mounjaro Tracker** → **Add**.
 
@@ -74,4 +77,4 @@ git commit -m "Describe your change"
 git push
 ```
 
-Vercel will automatically rebuild and update your URL in about a minute.
+Netlify will automatically rebuild and update your site in about a minute.
