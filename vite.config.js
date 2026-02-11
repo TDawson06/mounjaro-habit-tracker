@@ -18,8 +18,9 @@ export default defineConfig({
         background_color: "#ffffff",
         theme_color: "#ffffff",
         icons: [
-          { src: "/vite.svg", sizes: "192x192", type: "image/svg+xml", purpose: "any" },
-          { src: "/vite.svg", sizes: "512x512", type: "image/svg+xml", purpose: "any" },
+          { src: "/app-icon.svg", sizes: "192x192", type: "image/svg+xml", purpose: "any" },
+          { src: "/app-icon.svg", sizes: "512x512", type: "image/svg+xml", purpose: "any" },
+          { src: "/app-icon.svg", sizes: "512x512", type: "image/svg+xml", purpose: "maskable" },
         ],
       },
     }),
