@@ -8,7 +8,7 @@ const tabs = [
 
 export function TabBar({ activeTab, onChange }) {
   return (
-    <nav className="sticky bottom-0 z-10 border-t border-gray-200 bg-white/95 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
+    <nav className="fixed bottom-0 left-0 right-0 z-10 border-t border-zinc-100 bg-white/95 backdrop-blur-md">
       <div className="mx-auto flex max-w-3xl justify-around">
         {tabs.map((tab) => (
           <button
@@ -16,8 +16,8 @@ export function TabBar({ activeTab, onChange }) {
             type="button"
             onClick={() => onChange(tab.id)}
             className={`
-              flex-1 py-3 text-sm font-medium transition
-              ${activeTab === tab.id ? "text-emerald-600" : "text-gray-500 hover:text-gray-700"}
+              flex-1 py-3 text-xs font-medium tracking-wide transition
+              ${activeTab === tab.id ? "text-emerald-600" : "text-zinc-500 hover:text-zinc-700"}
             `}
           >
             {tab.label}
