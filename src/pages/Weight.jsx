@@ -68,12 +68,12 @@ export function Weight({ data, setData }) {
   return (
     <div className="space-y-4">
       <Card title="Log Weight">
-        <div className="space-y-3">
-          <div>
+        <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
+          <div className="min-w-0">
             <label className="mb-1 block text-sm font-medium text-gray-700">Date</label>
             <Input type="date" value={logDate} onChange={(e) => setLogDate(e.target.value)} />
           </div>
-          <div>
+          <div className="min-w-0">
             <label className="mb-1 block text-sm font-medium text-gray-700">Weight (kg)</label>
             <Input
               type="number"
@@ -85,6 +85,8 @@ export function Weight({ data, setData }) {
               onKeyDown={(e) => e.key === "Enter" && addLog()}
             />
           </div>
+        </div>
+        <div className="mt-3">
           <Button onClick={addLog}>Add log</Button>
         </div>
       </Card>
@@ -129,8 +131,8 @@ export function Weight({ data, setData }) {
       </Card>
 
       <Card title="Add Milestone">
-        <div className="space-y-3">
-          <div>
+        <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
+          <div className="min-w-0 sm:col-span-2">
             <label className="mb-1 block text-sm font-medium text-gray-700">Label</label>
             <Input
               placeholder="e.g. Fit into Adidas jacket"
@@ -139,8 +141,8 @@ export function Weight({ data, setData }) {
               onKeyDown={(e) => e.key === "Enter" && addMilestone()}
             />
           </div>
-          <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Target weight (kg)</label>
+          <div className="min-w-0">
+            <label className="mb-1 block text-sm font-medium text-gray-700">Target (kg)</label>
             <Input
               type="number"
               step="0.1"
@@ -150,7 +152,9 @@ export function Weight({ data, setData }) {
               onChange={(e) => setNewTargetKg(e.target.value)}
             />
           </div>
-          <Button onClick={addMilestone}>Add milestone</Button>
+          <div className="flex items-end">
+            <Button onClick={addMilestone}>Add milestone</Button>
+          </div>
         </div>
       </Card>
 

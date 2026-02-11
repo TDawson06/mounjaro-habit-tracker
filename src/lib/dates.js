@@ -45,6 +45,14 @@ export function getWeekDates(dateISO) {
 
 const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
+/** 0 = Monday, 6 = Sunday (week starts Monday) */
+export function getDayOfWeekMonFirst(dateISO) {
+  const [y, m, d] = dateISO.split("-").map(Number);
+  const date = new Date(y, m - 1, d);
+  const sunBased = date.getDay();
+  return (sunBased + 6) % 7;
+}
+
 export function formatShortDay(dateISO) {
   const [y, m, d] = dateISO.split("-").map(Number);
   const date = new Date(y, m - 1, d);

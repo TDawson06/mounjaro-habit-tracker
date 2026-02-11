@@ -5,11 +5,9 @@ function uid() {
 }
 
 const defaultData = {
-  habits: [
-    { id: uid(), name: "Morning walk", targetDaysPerWeek: 5 },
-    { id: uid(), name: "Track food", targetDaysPerWeek: 7 },
-  ],
+  habits: [],
   habitChecks: {},
+  skipDates: {},
   weightLogs: [],
   milestones: [
     { id: uid(), label: "Fit into Adidas Originals Jacket (94kg)", targetKg: 94, type: "custom" },
@@ -28,13 +26,29 @@ function isValidData(data) {
   );
 }
 
+function ensureSkipDates(data) {
+  if (typeof data.skipDates !== "object" || data.skipDates === null) {
+    data.skipDates = {};
+  }
+  return data;
+}
+
+function isOldDefaultHabits(habits) {
+  if (!Array.isArray(habits) || habits.length !== 2) return false;
+  const names = habits.map((h) => (h && h.name) || "").sort();
+  return names[0] === "Morning walk" && names[1] === "Track food";
+}
+
 export function loadData() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return getDefaultCopy();
     const data = JSON.parse(raw);
     if (!isValidData(data)) return getDefaultCopy();
-    return data;
+    if (isOldDefaultHabits(data.habits)) {
+      data.habits = [];
+    }
+    return ensureSkipDates(data);
   } catch {
     return getDefaultCopy();
   }
@@ -42,8 +56,9 @@ export function loadData() {
 
 function getDefaultCopy() {
   return {
-    habits: defaultData.habits.map((h) => ({ ...h })),
+    habits: [],
     habitChecks: {},
+    skipDates: {},
     weightLogs: [],
     milestones: defaultData.milestones.map((m) => ({ ...m })),
   };
